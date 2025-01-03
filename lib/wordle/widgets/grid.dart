@@ -1,77 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:wordle_clone/helper.dart';
 
-class WordleGrid extends StatefulWidget {
-  const WordleGrid({super.key});
+class WordleGrid extends StatelessWidget {
+  final List<Guess> guesses;
+  const WordleGrid({
+    super.key,
+    required this.guesses,
+  });
 
-  @override
-  State<WordleGrid> createState() => _WordleGridState();
-}
-
-class _WordleGridState extends State<WordleGrid> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            height: 25,
-          ),
-          WordleRow(),
-          WordleRow(),
-          WordleRow(),
-          WordleRow(),
-          WordleRow(),
-          WordleRow(),
-        ],
-      ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(6, (index) {
+            return WordleRow(
+              guesses: guesses,
+              row: index,
+            );
+          })),
     );
   }
 }
 
-class WordleRow extends StatefulWidget {
-  const WordleRow({super.key});
+class WordleRow extends StatelessWidget {
+  final List<Guess> guesses;
+  final int row;
+  const WordleRow({
+    super.key,
+    required this.guesses,
+    required this.row,
+  });
 
-  @override
-  State<WordleRow> createState() => _WordleRowState();
-}
-
-class _WordleRowState extends State<WordleRow> {
   @override
   Widget build(BuildContext context) {
+    List<String> letters = guesses[row].letters;
+    List<Color> colors = guesses[row].colors;
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
-        children: [
-          WordleBox(),
-          WordleBox(),
-          WordleBox(),
-          WordleBox(),
-          WordleBox(),
-        ],
+        children: List.generate(5, (index) {
+          String? letter = index < letters.length ? letters[index] : null;
+          Color boxColor =
+              (index < colors.length) ? colors[index] : BoxColor.none.color;
+          return WordleBox(
+              letter: letter, boxColor: boxColor //guesses[row].colors[index],
+              );
+        }),
       ),
     );
   }
+
+//   Color _getColor(
+//     String? letter,
+//     String correctWord,
+//     List<Guess> guesses,
+//     int prevGuessIndex,
+//     int row,
+//   ) {
+//     Color color = BoxColor.none.color;
+//     if (letter == null || letter.isEmpty || prevGuessIndex != row) {
+//       return color;
+//     }
+
+//     List<String> currentGuess = guesses[prevGuessIndex];
+//     int index = currentGuess.indexOf(letter);
+
+//     if (index != -1) {
+//       if (letter == correctWord[index]) {
+//         color = BoxColor.green.color;
+//       } else if (correctWord.contains(letter)) {
+//         color = BoxColor.yellow.color;
+//       }
+//     }
+
+//     return color;
+//   }
 }
 
-class WordleBox extends StatefulWidget {
-  const WordleBox({super.key});
+class WordleBox extends StatelessWidget {
+  final Color boxColor;
+  final String? letter;
+  const WordleBox({
+    super.key,
+    required this.letter,
+    required this.boxColor,
+  });
 
-  @override
-  State<WordleBox> createState() => _WordleBoxState();
-}
-
-class _WordleBoxState extends State<WordleBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 60,
       height: 60,
       decoration: BoxDecoration(
-          color: Color(0xffd5e6e7),
+          color: boxColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black,
@@ -82,6 +107,16 @@ class _WordleBoxState extends State<WordleBox> {
             color: Colors.black,
           ),
           borderRadius: BorderRadius.circular(10)),
+      child: Center(
+        child: Text(
+          letter ?? "",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
     );
   }
 }
