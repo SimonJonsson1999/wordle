@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wordle_clone/helper.dart';
 
 class WordleKeyboard extends StatelessWidget {
+  final Map<String, Color> keyboardStatus;
   final int currentGuess;
   final String correctWord;
   final List<List<String>> keyboardButtons;
@@ -14,6 +15,7 @@ class WordleKeyboard extends StatelessWidget {
     required this.correctWord,
     required this.currentGuess,
     required this.onKeyTap,
+    required this.keyboardStatus,
   });
 
   @override
@@ -32,6 +34,7 @@ class WordleKeyboard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(3),
                     child: KeyboardButton(
+                      keyboardStatus: keyboardStatus,
                       keyboardKey: key,
                       correctWord: correctWord,
                       guesses: guesses,
@@ -50,6 +53,7 @@ class WordleKeyboard extends StatelessWidget {
 }
 
 class KeyboardButton extends StatelessWidget {
+  final Map<String, Color> keyboardStatus;
   final int currentGuess;
   final List<Guess> guesses;
   final String correctWord;
@@ -63,6 +67,7 @@ class KeyboardButton extends StatelessWidget {
     required this.guesses,
     required this.currentGuess,
     required this.onKeyTap,
+    required this.keyboardStatus,
   });
 
   @override
@@ -84,10 +89,13 @@ class KeyboardButton extends StatelessWidget {
       );
     }
 
-    ColorPair colorPair =
-        _getColor(keyboardKey, correctWord, guesses, currentGuess);
-    Color boxColor = colorPair.firstColor;
-    Color textColor = colorPair.secondColor;
+    Color boxColor = keyboardStatus[keyboardKey] ?? BoxColor.background.color;
+    Color textColor = Colors.black;
+    if (boxColor == Colors.transparent) {
+      textColor = Colors.transparent;
+    } else if (boxColor == BoxColor.background.color) {
+      textColor = Colors.white;
+    }
 
     return GestureDetector(
       onTap: () => onKeyTap(keyboardKey),
@@ -111,28 +119,31 @@ class KeyboardButton extends StatelessWidget {
     );
   }
 
-  ColorPair _getColor(String? letter, String correctWord, List<Guess> guesses,
-      int currentGuessIndex) {
-    Color boxColor = BoxColor.background.color;
-    Color textColor = Colors.white;
-    if (letter == null || letter.isEmpty) {
-      return ColorPair(boxColor, textColor);
-    }
+  // ColorPair _getColor(String? letter, String correctWord, List<Guess> guesses,
+  //     int currentGuessIndex) {
+  //   Color boxColor = BoxColor.background.color;
+  //   Color textColor = Colors.white;
 
-    for (int i = 0; i < currentGuessIndex; i++) {
-      List<String> currentGuess = guesses[i].letters;
-      int index = currentGuess.indexOf(letter);
-      if ((index != -1) && (i != currentGuessIndex)) {
-        if (letter == correctWord[index]) {
-          boxColor = BoxColor.green.color;
-          textColor = Colors.black;
-          return ColorPair(boxColor, textColor);
-        } else if (correctWord.contains(letter)) {
-          boxColor = BoxColor.yellow.color;
-          textColor = Colors.black;
-        }
-      }
-    }
-    return ColorPair(boxColor, textColor);
-  }
+  //   if (letter == null || letter.isEmpty) {
+  //     return ColorPair(boxColor, textColor);
+  //   }
+  //   for (int i = 0; i < guesses.length; i++) {
+  //     List<String> currentGuess = guesses[i].letters;
+  //     int index = currentGuess.indexOf(letter);
+  //     if ((index != -1) && (i != currentGuessIndex)) {
+  //       if (letter == correctWord[index]) {
+  //         boxColor = BoxColor.green.color;
+  //         textColor = Colors.black;
+  //         return ColorPair(boxColor, textColor);
+  //       } else if (correctWord.contains(letter)) {
+  //         boxColor = BoxColor.yellow.color;
+  //         textColor = Colors.black;
+  //       } else {
+  //         boxColor = Colors.transparent;
+  //         textColor = Colors.transparent;
+  //       }
+  //     }
+  //   }
+  //   return ColorPair(boxColor, textColor);
+  // }
 }

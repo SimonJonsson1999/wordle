@@ -14,7 +14,7 @@ class WordleGrid extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(6, (index) {
+          children: List.generate(maxGuesses, (index) {
             return WordleRow(
               guesses: guesses,
               row: index,
@@ -42,43 +42,15 @@ class WordleRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
-        children: List.generate(5, (index) {
+        children: List.generate(wordLength, (index) {
           String? letter = index < letters.length ? letters[index] : null;
           Color boxColor =
               (index < colors.length) ? colors[index] : BoxColor.none.color;
-          return WordleBox(
-              letter: letter, boxColor: boxColor //guesses[row].colors[index],
-              );
+          return WordleBox(letter: letter, boxColor: boxColor);
         }),
       ),
     );
   }
-
-//   Color _getColor(
-//     String? letter,
-//     String correctWord,
-//     List<Guess> guesses,
-//     int prevGuessIndex,
-//     int row,
-//   ) {
-//     Color color = BoxColor.none.color;
-//     if (letter == null || letter.isEmpty || prevGuessIndex != row) {
-//       return color;
-//     }
-
-//     List<String> currentGuess = guesses[prevGuessIndex];
-//     int index = currentGuess.indexOf(letter);
-
-//     if (index != -1) {
-//       if (letter == correctWord[index]) {
-//         color = BoxColor.green.color;
-//       } else if (correctWord.contains(letter)) {
-//         color = BoxColor.yellow.color;
-//       }
-//     }
-
-//     return color;
-//   }
 }
 
 class WordleBox extends StatelessWidget {
