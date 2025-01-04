@@ -44,8 +44,9 @@ class WordleRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: List.generate(wordLength, (index) {
           String? letter = index < letters.length ? letters[index] : null;
-          Color boxColor =
-              (index < colors.length) ? colors[index] : BoxColor.none.color;
+          Color boxColor = (index < colors.length)
+              ? colors[index]
+              : Theme.of(context).colorScheme.primary;
           return WordleBox(letter: letter, boxColor: boxColor);
         }),
       ),
@@ -76,7 +77,7 @@ class WordleBox extends StatelessWidget {
             )
           ],
           border: Border.all(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.shadow,
           ),
           borderRadius: BorderRadius.circular(10)),
       child: Center(
@@ -85,7 +86,7 @@ class WordleBox extends StatelessWidget {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.shadow,
           ),
         ),
       ),

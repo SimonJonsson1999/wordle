@@ -31,11 +31,14 @@ class OptionsWidget extends StatelessWidget {
       children: [
         Icon(
           Icons.settings,
-          color: Color(0xff5f9be8),
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        SizedBox(
+          width: 10,
         ),
         Icon(
           Icons.query_stats,
-          color: Color(0xff5f9be8),
+          color: Theme.of(context).colorScheme.primary,
         ),
       ],
     );
@@ -54,7 +57,7 @@ class TextWidget extends StatelessWidget {
       style: TextStyle(
         fontSize: 25,
         fontWeight: FontWeight.w700,
-        color: Color(0xff5f9be8),
+        color: Theme.of(context).colorScheme.primaryFixed,
       ),
     );
   }
@@ -71,10 +74,13 @@ class BackButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).pop();
       },
-      icon: const Icon(
-        Icons.arrow_back_ios_new,
-        color: Color(0xff5f9be8),
-        size: 16,
+      icon: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Icon(
+          Icons.arrow_back_ios_new,
+          color: Theme.of(context).colorScheme.primary,
+          size: 16,
+        ),
       ),
     );
   }

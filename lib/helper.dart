@@ -9,12 +9,13 @@ final List<List<String>> keys = [
   ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
 ];
 
-Map<String, Color> createKeyboardColorMap(List<List<String>> keys) {
+Map<String, Color> createKeyboardColorMap(
+    BuildContext context, List<List<String>> keys) {
   Map<String, Color> colorMap = {};
 
   for (var row in keys) {
     for (var key in row) {
-      colorMap[key] = BoxColor.background.color;
+      colorMap[key] = Theme.of(context).colorScheme.primary;
     }
   }
   return colorMap;

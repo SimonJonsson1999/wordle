@@ -3,17 +3,11 @@ import 'package:wordle_clone/helper.dart';
 
 class WordleKeyboard extends StatelessWidget {
   final Map<String, Color> keyboardStatus;
-  final int currentGuess;
-  final String correctWord;
   final List<List<String>> keyboardButtons;
-  final List<Guess> guesses;
   final void Function(String) onKeyTap;
   const WordleKeyboard({
     super.key,
     required this.keyboardButtons,
-    required this.guesses,
-    required this.correctWord,
-    required this.currentGuess,
     required this.onKeyTap,
     required this.keyboardStatus,
   });
@@ -36,9 +30,6 @@ class WordleKeyboard extends StatelessWidget {
                     child: KeyboardButton(
                       keyboardStatus: keyboardStatus,
                       keyboardKey: key,
-                      correctWord: correctWord,
-                      guesses: guesses,
-                      currentGuess: currentGuess,
                       onKeyTap: onKeyTap,
                     ),
                   ),
@@ -54,18 +45,12 @@ class WordleKeyboard extends StatelessWidget {
 
 class KeyboardButton extends StatelessWidget {
   final Map<String, Color> keyboardStatus;
-  final int currentGuess;
-  final List<Guess> guesses;
-  final String correctWord;
   final String keyboardKey;
   final Function(String) onKeyTap;
 
   const KeyboardButton({
     super.key,
     required this.keyboardKey,
-    required this.correctWord,
-    required this.guesses,
-    required this.currentGuess,
     required this.onKeyTap,
     required this.keyboardStatus,
   });
@@ -77,11 +62,11 @@ class KeyboardButton extends StatelessWidget {
         onTap: () => onKeyTap(keyboardKey),
         child: Container(
           height: 50,
-          color: Color(0xff3a4f69),
+          color: Theme.of(context).colorScheme.primary,
           child: Center(
-            child: const Icon(
+            child: Icon(
               Icons.keyboard_backspace_rounded,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.shadow,
               size: 10,
             ),
           ),
@@ -89,12 +74,13 @@ class KeyboardButton extends StatelessWidget {
       );
     }
 
-    Color boxColor = keyboardStatus[keyboardKey] ?? BoxColor.background.color;
+    Color boxColor =
+        keyboardStatus[keyboardKey] ?? Theme.of(context).colorScheme.primary;
     Color textColor = Colors.black;
-    if (boxColor == Colors.transparent) {
-      textColor = Colors.transparent;
-    } else if (boxColor == BoxColor.background.color) {
-      textColor = Colors.white;
+    if (boxColor == Theme.of(context).colorScheme.primaryFixed) {
+      textColor = Theme.of(context).colorScheme.tertiary;
+    } else if (boxColor == Theme.of(context).colorScheme.primary) {
+      textColor = Theme.of(context).colorScheme.shadow;
     }
 
     return GestureDetector(
@@ -118,32 +104,4 @@ class KeyboardButton extends StatelessWidget {
       ),
     );
   }
-
-  // ColorPair _getColor(String? letter, String correctWord, List<Guess> guesses,
-  //     int currentGuessIndex) {
-  //   Color boxColor = BoxColor.background.color;
-  //   Color textColor = Colors.white;
-
-  //   if (letter == null || letter.isEmpty) {
-  //     return ColorPair(boxColor, textColor);
-  //   }
-  //   for (int i = 0; i < guesses.length; i++) {
-  //     List<String> currentGuess = guesses[i].letters;
-  //     int index = currentGuess.indexOf(letter);
-  //     if ((index != -1) && (i != currentGuessIndex)) {
-  //       if (letter == correctWord[index]) {
-  //         boxColor = BoxColor.green.color;
-  //         textColor = Colors.black;
-  //         return ColorPair(boxColor, textColor);
-  //       } else if (correctWord.contains(letter)) {
-  //         boxColor = BoxColor.yellow.color;
-  //         textColor = Colors.black;
-  //       } else {
-  //         boxColor = Colors.transparent;
-  //         textColor = Colors.transparent;
-  //       }
-  //     }
-  //   }
-  //   return ColorPair(boxColor, textColor);
-  // }
 }
