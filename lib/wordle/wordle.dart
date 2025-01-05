@@ -18,13 +18,9 @@ class WordlePage extends StatelessWidget {
             children: [
               const WordleHeader(),
               const Divider(),
-              WordleGrid(guesses: wordleState.guesses),
+              WordleGrid(),
               const Divider(),
-              WordleKeyboard(
-                keyboardStatus: wordleState.keyboardStatus,
-                onKeyTap: wordleState.onKeyTap,
-                keyboardButtons: keys,
-              ),
+              WordleKeyboard(),
             ],
           ),
           if (wordleState.hasWon) _buildWinOverlay(context, wordleState),

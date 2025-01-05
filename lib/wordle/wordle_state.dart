@@ -7,6 +7,9 @@ class WordleState with ChangeNotifier {
   int currentGuess = 0;
   Map<String, KeyStatus> keyboardStatus = {};
   bool hasWon = false;
+  List<List<String>> keys = [
+    [""]
+  ];
 
   WordleState({required correctWord})
       : correctWord = correctWord.toUpperCase() {
@@ -16,7 +19,8 @@ class WordleState with ChangeNotifier {
   _initializeState() {
     guesses =
         List.generate(maxGuesses + 1, (_) => Guess(letters: [], keyStatus: []));
-    keyboardStatus = createKeyboardColorMap();
+    keys = defineKeyboardKeys();
+    keyboardStatus = createKeyboardColorMap(keys);
   }
 
   void onKeyTap(String letter) {
@@ -89,18 +93,20 @@ class WordleState with ChangeNotifier {
     hasWon = false;
     guesses =
         List.generate(maxGuesses + 1, (_) => Guess(letters: [], keyStatus: []));
-    keyboardStatus = createKeyboardColorMap();
+    keyboardStatus = createKeyboardColorMap(keys);
     notifyListeners();
   }
 }
 
-final List<List<String>> keys = [
-  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Å'],
-  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä'],
-  ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
-];
+List<List<String>> defineKeyboardKeys() {
+  return [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Å'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä'],
+    ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
+  ];
+}
 
-Map<String, KeyStatus> createKeyboardColorMap() {
+Map<String, KeyStatus> createKeyboardColorMap(List<List<String>> keys) {
   Map<String, KeyStatus> keyStatus = {};
 
   for (var row in keys) {
