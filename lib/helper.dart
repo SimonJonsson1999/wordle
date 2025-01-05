@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wordle_clone/wordle/wordle_state.dart';
 
 final int maxGuesses = 6;
 final int wordLength = 5;
-
-final List<List<String>> keys = [
-  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Å'],
-  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä'],
-  ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Backspace'],
-];
-
-Map<String, Color> createKeyboardColorMap(
-    BuildContext context, List<List<String>> keys) {
-  Map<String, Color> colorMap = {};
-
-  for (var row in keys) {
-    for (var key in row) {
-      colorMap[key] = Theme.of(context).colorScheme.primary;
-    }
-  }
-  return colorMap;
-}
 
 enum BoxColor {
   none,
@@ -52,9 +35,15 @@ class ColorPair {
   ColorPair(this.firstColor, this.secondColor);
 }
 
-class Guess {
-  final List<String> letters;
-  final List<Color> colors;
-
-  Guess({required this.letters, required this.colors});
+Color getColorForKeyStatus(KeyStatus status, BuildContext context) {
+  switch (status) {
+    case KeyStatus.correct:
+      return Colors.green;
+    case KeyStatus.present:
+      return Colors.yellow;
+    case KeyStatus.incorrect:
+      return Theme.of(context).colorScheme.primaryFixed;
+    case KeyStatus.notPressed:
+      return Theme.of(context).colorScheme.primary;
+  }
 }

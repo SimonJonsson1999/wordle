@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:wordle_clone/home/home.dart';
 import 'package:wordle_clone/themes/light_mode.dart';
 import 'package:wordle_clone/wordle/wordle.dart';
+import 'package:wordle_clone/wordle/wordle_state.dart';
 
 // TODO
 // Connect to Firebase db
@@ -20,15 +22,22 @@ class Wordle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Wordle",
-      theme: lightMode,
-      routes: {
-        '/': (context) => const HomePage(),
-        '/play': (context) => const WordlePage(),
-      },
-      initialRoute: '/',
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => WordleState(correctWord: "World"),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Wordle",
+        theme: lightMode,
+        routes: {
+          '/': (context) => const HomePage(),
+          '/play': (context) => const WordlePage(),
+        },
+        initialRoute: '/',
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/helper.dart';
+import 'package:wordle_clone/wordle/wordle_state.dart';
+import 'package:wordle_clone/helper.dart';
 
 class WordleGrid extends StatelessWidget {
   final List<Guess> guesses;
@@ -36,7 +38,7 @@ class WordleRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> letters = guesses[row].letters;
-    List<Color> colors = guesses[row].colors;
+    List<KeyStatus> keystatus = guesses[row].keyStatus;
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       child: Row(
@@ -44,8 +46,8 @@ class WordleRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: List.generate(wordLength, (index) {
           String? letter = index < letters.length ? letters[index] : null;
-          Color boxColor = (index < colors.length)
-              ? colors[index]
+          Color boxColor = (index < keystatus.length)
+              ? getColorForKeyStatus(keystatus[index], context)
               : Theme.of(context).colorScheme.primary;
           return WordleBox(letter: letter, boxColor: boxColor);
         }),

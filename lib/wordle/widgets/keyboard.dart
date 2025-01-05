@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/helper.dart';
+import 'package:wordle_clone/wordle/wordle_state.dart';
+import 'package:wordle_clone/helper.dart';
 
 class WordleKeyboard extends StatelessWidget {
-  final Map<String, Color> keyboardStatus;
+  final Map<String, KeyStatus> keyboardStatus;
   final List<List<String>> keyboardButtons;
   final void Function(String) onKeyTap;
   const WordleKeyboard({
@@ -44,7 +46,7 @@ class WordleKeyboard extends StatelessWidget {
 }
 
 class KeyboardButton extends StatelessWidget {
-  final Map<String, Color> keyboardStatus;
+  final Map<String, KeyStatus> keyboardStatus;
   final String keyboardKey;
   final Function(String) onKeyTap;
 
@@ -74,12 +76,12 @@ class KeyboardButton extends StatelessWidget {
       );
     }
 
-    Color boxColor =
-        keyboardStatus[keyboardKey] ?? Theme.of(context).colorScheme.primary;
+    KeyStatus keyStatus = keyboardStatus[keyboardKey] ?? KeyStatus.notPressed;
+    Color boxColor = getColorForKeyStatus(keyStatus, context);
     Color textColor = Colors.black;
-    if (boxColor == Theme.of(context).colorScheme.primaryFixed) {
+    if (keyStatus == KeyStatus.incorrect) {
       textColor = Theme.of(context).colorScheme.tertiary;
-    } else if (boxColor == Theme.of(context).colorScheme.primary) {
+    } else if (keyStatus == KeyStatus.notPressed) {
       textColor = Theme.of(context).colorScheme.shadow;
     }
 
