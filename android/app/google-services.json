@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1821128878",
+    "project_id": "wordle-clone-aac21",
+    "storage_bucket": "wordle-clone-aac21.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1821128878:android:504965031e682d5c6ed53f",
+        "android_client_info": {
+          "package_name": "com.example.wordle_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUlTl6e5AQs2zAztjneV82c4GjTM8R1qg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
